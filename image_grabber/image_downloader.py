@@ -1,12 +1,14 @@
 import json
 import os
 import urllib2
-
-from bs4 import BeautifulSoup
-
 from grab_source import GrabSourceType
 from settings import *
 from utils.string_utils import StringUtil
+
+import time
+
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
 
 # TODO: split this into 3 classes: abstract grab class, google grab class and imageDownloader calling sub grab classes
@@ -37,19 +39,40 @@ class ImageDownloader:
 
         print '> searching image on Google : ' + url
 
-        soup = self.__get_soup(url)
+        options = webdriver.ChromeOptions()
+        options.set_headless()
 
-        sub_folder_name = self.__create_destination_folder()
+        browser = webdriver.Chrome(chrome_options=options)
+
+        browser.get(url)
+        time.sleep(2)
+
+        elem = browser.find_element_by_tag_name("body")
+
+        # scroll to fire the infinite scroll event and load more images
+        no_of_pages_down = 20
+        while no_of_pages_down:
+            elem.send_keys(Keys.PAGE_DOWN)
+            time.sleep(0.2)
+            no_of_pages_down -= 1
+
+        images = browser.find_elements_by_class_name("rg_meta")
 
         images_urls = []
-        for a in soup.find_all("div", {"class": "rg_meta"}):
-            link, Type = json.loads(a.text)["ou"], json.loads(a.text)["ity"]
+        for image in images:
+            json_content = image.get_attribute('innerHTML')
             # links for Large original images, type of  image
-            images_urls.append((link, Type))
+            link, fileType = json.loads(json_content)["ou"], json.loads(json_content)["ity"]
+            images_urls.append((link, fileType))
 
-        print "total of %s images found (limit to download set to %s)" % (len(images_urls), self.limit)
+        browser.close()
 
-        self.__download_files(images_urls, sub_folder_name)
+        if len(images_urls) == 0:
+            print "No image found on Google"
+        else:
+            print "\n %s images found on Google, limit to download set to %s \n" % (len(images_urls), self.limit)
+            sub_folder_name = self.__create_destination_folder()
+            self.__download_files(images_urls, sub_folder_name)
 
     def __set_default_file_prefix(self):
         """if no specified file prefix, build one from keyword"""
@@ -71,7 +94,7 @@ class ImageDownloader:
 
     def __download_files(self, urls, folder_name):
         """ save images in file system from list of urls """
-        for i, (img, Type) in enumerate(urls):
+        for i, (img, fileType) in enumerate(urls):
             if i == self.limit:
                 break
             try:
@@ -79,7 +102,7 @@ class ImageDownloader:
                 raw_img = urllib2.urlopen(req).read()
 
                 counter = len([i for i in os.listdir(folder_name) if self.file_prefix in i]) + 1
-                extension = ".jpg" if len(Type) == 0 else "." + Type
+                extension = ".jpg" if len(fileType) == 0 else "." + fileType
                 file_name = self.file_prefix + "_" + str(counter) + extension
                 f = open(os.path.join(folder_name, file_name), 'wb')
 
@@ -91,6 +114,3 @@ class ImageDownloader:
             except Exception as e:
                 print "could not load : " + img
                 print e
-
-    def __get_soup(self, url):
-        return BeautifulSoup(urllib2.urlopen(urllib2.Request(url, headers=USER_AGENT_HEADER)), 'html.parser')

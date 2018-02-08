@@ -1,3 +1,4 @@
 images/
 .idea/
 *.pyc
+*.log
