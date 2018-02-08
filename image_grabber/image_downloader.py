@@ -41,7 +41,7 @@ class ImageDownloader:
             print "\n %s images found on %s, limit to download set to %s \n" % (nb_urls, self.sources, self.limit)
             self.__download_files(images[:self.limit], sub_folder_name)
             end = time.time()
-            print "\n %s images downloaded in %s sec" % (len(images[:self.limit]), end - start)
+            print "\n %s images downloaded in %s sec" % (self.limit, end - start)
 
     def __set_default_file_prefix(self):
         """if no specified file prefix, build one from keyword"""
