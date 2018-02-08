@@ -35,7 +35,7 @@ class ImageDownloader:
             images.extend(google_grabber.get_images_url(self.keyword))
         elif GrabSourceType.BING in self.sources:
             bing_grabber = BingGrabber()
-            bing_grabber.full_image = True
+            bing_grabber.full_image = False
             images.extend(bing_grabber.get_images_url(self.keyword))
 
         nb_urls = len(images)

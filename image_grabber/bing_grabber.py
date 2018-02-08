@@ -27,11 +27,12 @@ class BingGrabber(AbstractGrabber):
         print '> searching image on Bing : ' + url
 
         options = webdriver.ChromeOptions()
-        options.set_headless()
 
         browser = webdriver.Chrome(chrome_options=options)
 
         browser.get(url)
+        print browser.get_window_size()
+        browser.maximize_window()
         time.sleep(2)
 
         elem = browser.find_element_by_tag_name("body")
@@ -55,7 +56,7 @@ class BingGrabber(AbstractGrabber):
                     image_obj.extension = image_obj.url.split('.')[-1]
                 images_objects.append(image_obj)
         else:
-            images = browser.find_elements_by_class_name("ming")
+            images = browser.find_elements_by_class_name("mimg")
             for image in images:
                 image_obj = GrabbedImage()
                 src = image.get_attribute('src')
