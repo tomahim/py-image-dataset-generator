@@ -17,7 +17,9 @@ Run this command to install selenium Chromedriver (needed to grab images)
 ### Usage
 
 Git clone the project
+
 cd to the root of the project
+
 Automatically grab images with this command line :
 
 `python dataset_generator.py "red car" -limit 50 -dest images`
