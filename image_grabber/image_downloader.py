@@ -3,6 +3,7 @@ import urllib2
 import time
 
 from google_grabber import GoogleGrabber
+from bing_grabber import BingGrabber
 from grab_source import GrabSourceType
 from settings import *
 from utils.string_utils import StringUtil
@@ -16,7 +17,7 @@ class ImageDownloader:
     limit = 50
     file_prefix = None
 
-    sources = [GrabSourceType.GOOGLE]
+    sources = [GrabSourceType.BING]
 
     def __init__(self, destination='images', limit=50):
         """Constructor for ImageGrabber"""
@@ -32,6 +33,10 @@ class ImageDownloader:
             google_grabber = GoogleGrabber()
             google_grabber.full_image = True
             images.extend(google_grabber.get_images_url(self.keyword))
+        elif GrabSourceType.BING in self.sources:
+            bing_grabber = BingGrabber()
+            bing_grabber.full_image = True
+            images.extend(bing_grabber.get_images_url(self.keyword))
 
         nb_urls = len(images)
         if nb_urls == 0:

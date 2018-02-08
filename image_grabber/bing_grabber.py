@@ -9,10 +9,12 @@ from grabbed_image import GrabbedImage
 import unicodedata
 
 
-class GoogleGrabber(AbstractGrabber):
+class BingGrabber(AbstractGrabber):
     """Grab images from google search"""
 
     full_image = True
+
+    BING_URL = "https://www.bing.com/images/search?q=%s"
 
     def __init__(self):
         pass
@@ -20,9 +22,9 @@ class GoogleGrabber(AbstractGrabber):
     def get_images_url(self, keyword):
         query = keyword.split()
         query = '+'.join(query)
-        url = GOOGLE_URL % query
+        url = self.BING_URL % query
 
-        print '> searching image on Google : ' + url
+        print '> searching image on Bing : ' + url
 
         options = webdriver.ChromeOptions()
         options.set_headless()
@@ -43,16 +45,17 @@ class GoogleGrabber(AbstractGrabber):
 
         images_objects = []
         if self.full_image:
-            images = browser.find_elements_by_class_name("rg_meta")
+            images = browser.find_elements_by_class_name("iusc")
             for image in images:
                 image_obj = GrabbedImage()
-                json_content = image.get_attribute('innerHTML')
+                json_content = image.get_attribute('m')
                 # links for Large original image
-                image_obj.url = json.loads(json_content)["ou"]
-                image_obj.extension = json.loads(json_content)["ity"]
+                image_obj.url = json.loads(json_content)["murl"]
+                if image_obj.url.split('.')[-1] is not None:
+                    image_obj.extension = image_obj.url.split('.')[-1]
                 images_objects.append(image_obj)
         else:
-            images = browser.find_elements_by_class_name("rg_ic")
+            images = browser.find_elements_by_class_name("ming")
             for image in images:
                 image_obj = GrabbedImage()
                 src = image.get_attribute('src')
