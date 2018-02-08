@@ -25,15 +25,17 @@ class ImageDownloader:
     def download_images(self, keyword):
         self.keyword = keyword
         self.__set_default_file_prefix()
-        google_grabber = GoogleGrabber()
-        google_urls = google_grabber.get_images_url(self.keyword)
-        sub_folder_name = self.__create_destination_folder()
+        urls = []
+        if GrabSourceType.GOOGLE in self.sources:
+            google_grabber = GoogleGrabber()
+            urls.extend(google_grabber.get_images_url(self.keyword))
 
-        if len(google_urls) == 0:
-            print "No image found on Google"
+        if len(urls) == 0:
+            print "No image found on sources " + self.sources
         else:
-            print "\n %s images found on Google, limit to download set to %s \n" % (len(google_urls), self.limit)
-            self.__download_files(google_urls[:self.limit], sub_folder_name)
+            sub_folder_name = self.__create_destination_folder()
+            print "\n %s images found on %s, limit to download set to %s \n" % (len(urls), self.sources, self.limit)
+            self.__download_files(urls[:self.limit], sub_folder_name)
 
     def __set_default_file_prefix(self):
         """if no specified file prefix, build one from keyword"""
