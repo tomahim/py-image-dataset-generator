@@ -22,4 +22,4 @@ Automatically grab images with this command line :
 
 `python dataset_generator.py "red car" -limit 50 -dest images`
     
-In this example, you will have 50 images of red car in your /images/red_car folder. 
+In this example, you will have 50 images of red cars in your /images/red_car folder. 
