@@ -2,7 +2,7 @@
 
 This project intend to collect large dataset of images with minimal effort.
 
-It could first grab image from internet by specifying keywords (google images for now) and then generate new one from existing an existing dataset (to implement).
+It could first grab image from internet by specifying keywords (google images for now) and then generate new one from an existing dataset (not implemented yet).
 
 ### Pre-requirements
 
