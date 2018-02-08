@@ -1,8 +1,8 @@
 # Python image dataset generator
 
-This project intend to collect large images dataset with minimal effort.
+This project intend to collect large dataset of images with minimal effort.
 
-First grab image from internet by specifying keywords (google images by default) and then generate new one from existing an existing dataset.
+It could first grab image from internet by specifying keywords (google images for now) and then generate new one from existing an existing dataset (to implement).
 
 ### Pre-requirements
 
