@@ -25,8 +25,8 @@ class ImageDownloader:
     def download_images(self, keyword):
         self.keyword = keyword
         self.__set_default_file_prefix()
-        googleGrabber = GoogleGrabber()
-        google_urls = googleGrabber.get_images_url(self.keyword)
+        google_grabber = GoogleGrabber()
+        google_urls = google_grabber.get_images_url(self.keyword)
         sub_folder_name = self.__create_destination_folder()
 
         if len(google_urls) == 0:
