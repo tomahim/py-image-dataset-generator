@@ -6,7 +6,13 @@ It could first grab image from internet by specifying keywords (google images fo
 
 ### Pre-requirements
 
-Get python dependencies
+This project is tested with Python 2.7.14.
+
+### Installation
+
+Git clone the project
+
+Get the python dependencies
 
 `pip install -r requirements.txt`
 
@@ -16,11 +22,7 @@ Run this command to install selenium Chromedriver (needed to grab images)
 
 ### Usage
 
-Git clone the project
-
-cd to the root of the project
-
-Automatically grab images with this command line :
+Automatically grab images with this command line (from the root of the project) :
 
 `python dataset_generator.py "red car" -limit 50 -dest images`
     
