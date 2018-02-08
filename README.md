@@ -18,7 +18,9 @@ Get the python dependencies
 
 Run this command to install selenium Chromedriver (needed to grab images)
 
-`python setup.py install --chromedriver-version=2.20`
+`pip install chromedriver_installer --install-option="--chromedriver-version=2.20`
+or 
+`pip install chromedriver_installer --install-option="--chromedriver-version=2.35` (for Bing)
 
 ### Usage
 
