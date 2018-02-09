@@ -8,11 +8,13 @@ if __name__ == '__main__':
     parser.add_argument('image_keyword',
                         nargs=1,
                         help='keyword to search')
+
     parser.add_argument('-dest',
                         '-d',
                         help='Folder destination (default: %s/). A sub folder is created for each keywords'
                         % DEFAULT_DESTINATION_FOLDER
                         )
+
     parser.add_argument('-limit',
                         '-l',
                         help='Number of files to download (default: %s)'
@@ -32,6 +34,7 @@ if __name__ == '__main__':
                              % (possible_datasources, DEFAULT_GRAB_SOURCE_TYPE),
                         action='append',
                         dest='sources')
+
     parser.add_argument('-allsources',
                         '-as',
                         action="store_true", default=False,
