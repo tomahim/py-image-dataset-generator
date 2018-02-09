@@ -18,7 +18,7 @@ Get the python dependencies
 
 Run this command to install selenium Chromedriver (needed for infinite scroll through search pages)
 
-`pip install chromedriver_installer --install-option="--chromedriver-version=20.35"`
+`pip install chromedriver_installer --install-option="--chromedriver-version=2.35`
 
 ### Usage
 
