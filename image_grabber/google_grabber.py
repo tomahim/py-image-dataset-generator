@@ -4,14 +4,15 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 from abstract_grabber import AbstractGrabber
-from settings import *
 from grabbed_image import GrabbedImage
+from grab_settings import *
 import unicodedata
 
 
 class GoogleGrabber(AbstractGrabber):
     """Grab images from google search"""
 
+    GOOGLE_URL = "https://www.google.co.in/search?q=%s&source=lnms&tbm=isch"
     full_image = True
 
     def __init__(self):
@@ -20,12 +21,11 @@ class GoogleGrabber(AbstractGrabber):
     def get_images_url(self, keyword):
         query = keyword.split()
         query = '+'.join(query)
-        url = GOOGLE_URL % query
+        url = self.GOOGLE_URL % query
 
         print '> searching image on Google : ' + url
 
         options = webdriver.ChromeOptions()
-        options.set_headless()
 
         browser = webdriver.Chrome(chrome_options=options)
 
@@ -46,6 +46,7 @@ class GoogleGrabber(AbstractGrabber):
             images = browser.find_elements_by_class_name("rg_meta")
             for image in images:
                 image_obj = GrabbedImage()
+                image_obj.source = GrabSourceType.GOOGLE.value
                 json_content = image.get_attribute('innerHTML')
                 # links for Large original image
                 image_obj.url = json.loads(json_content)["ou"]
@@ -55,6 +56,7 @@ class GoogleGrabber(AbstractGrabber):
             images = browser.find_elements_by_class_name("rg_ic")
             for image in images:
                 image_obj = GrabbedImage()
+                image_obj.source = GrabSourceType.GOOGLE.value
                 src = image.get_attribute('src')
                 if self.__is_http_url(src):
                     image_obj.url = src

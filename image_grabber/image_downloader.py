@@ -4,22 +4,23 @@ import time
 
 from google_grabber import GoogleGrabber
 from bing_grabber import BingGrabber
-from grab_source import GrabSourceType
-from settings import *
+from grab_settings import *
 from utils.string_utils import StringUtil
+import math
 
 
 class ImageDownloader:
     """Download images from a keyword and website sources"""
 
     keyword = None
-    destination = 'images'
-    limit = 50
+    destination = DEFAULT_DESTINATION_FOLDER
+    limit = DEFAULT_DOWNLOAD_LIMIT
     file_prefix = None
+    image_size = ImageSize.LARGE
 
-    sources = [GrabSourceType.BING]
+    sources = [DEFAULT_GRAB_SOURCE_TYPE]
 
-    def __init__(self, destination='images', limit=50):
+    def __init__(self, destination=DEFAULT_DESTINATION_FOLDER, limit=DEFAULT_DOWNLOAD_LIMIT):
         """Constructor for ImageGrabber"""
         self.destination = destination
         self.limit = limit
@@ -28,15 +29,21 @@ class ImageDownloader:
         start = time.time()
         self.keyword = keyword
         self.__set_default_file_prefix()
+        all_sources = [e.value for e in GrabSourceType]
+        selected_sources = all_sources if ALL_SOURCE in self.sources else self.sources
         images = []
-        if GrabSourceType.GOOGLE in self.sources:
+        if GrabSourceType.GOOGLE.value in selected_sources:
             google_grabber = GoogleGrabber()
-            google_grabber.full_image = True
+            google_grabber.full_image = self.image_size == ImageSize.LARGE
             images.extend(google_grabber.get_images_url(self.keyword))
-        elif GrabSourceType.BING in self.sources:
+
+        if GrabSourceType.BING.value in selected_sources:
             bing_grabber = BingGrabber()
-            bing_grabber.full_image = False
+            bing_grabber.full_image = self.image_size == ImageSize.LARGE
             images.extend(bing_grabber.get_images_url(self.keyword))
+
+        if ALL_SOURCE in self.sources or len(selected_sources) > 1:
+            images = self.__repart_between_image_sources(selected_sources, images)
 
         nb_urls = len(images)
         if nb_urls == 0:
@@ -47,6 +54,13 @@ class ImageDownloader:
             self.__download_files(images[:self.limit], sub_folder_name)
             end = time.time()
             print "\n %s images downloaded in %s sec" % (self.limit, end - start)
+
+    def __repart_between_image_sources(self, sources, images):
+        nb_by_source = int(math.ceil(self.limit / len(sources)))
+        repart_images = []
+        for source in sources:
+            repart_images.extend([img for img in images if img.source == source][:nb_by_source])
+        return repart_images
 
     def __set_default_file_prefix(self):
         """if no specified file prefix, build one from keyword"""
@@ -78,7 +92,8 @@ class ImageDownloader:
                 file_name = self.file_prefix + "_" + str(counter) + extension
                 f = open(os.path.join(folder_name, file_name), 'wb')
 
-                print "> grabbing %s \n >> saving file %s" % (image.url if image.url else 'from base64 content', file_name)
+                print "> grabbing %s \n >> saving file %s" % (
+                image.url if image.url else 'from base64 content', file_name)
 
                 if image.base64 is not None:
                     f.write(image.base64.split('base64,')[1].decode('base64'))

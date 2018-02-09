@@ -2,9 +2,9 @@ import json
 import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from grab_settings import *
 
 from abstract_grabber import AbstractGrabber
-from settings import *
 from grabbed_image import GrabbedImage
 import unicodedata
 
@@ -49,6 +49,7 @@ class BingGrabber(AbstractGrabber):
             images = browser.find_elements_by_class_name("iusc")
             for image in images:
                 image_obj = GrabbedImage()
+                image_obj.source = GrabSourceType.BING.value
                 json_content = image.get_attribute('m')
                 # links for Large original image
                 image_obj.url = json.loads(json_content)["murl"]
@@ -59,6 +60,7 @@ class BingGrabber(AbstractGrabber):
             images = browser.find_elements_by_class_name("mimg")
             for image in images:
                 image_obj = GrabbedImage()
+                image_obj.source = GrabSourceType.BING.value
                 src = image.get_attribute('src')
                 if self.__is_http_url(src):
                     image_obj.url = src
