@@ -2,18 +2,19 @@ import json
 import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from grab_settings import *
 
 from abstract_grabber import AbstractGrabber
 from grabbed_image import GrabbedImage
-from grab_settings import *
 import unicodedata
 
 
-class GoogleGrabber(AbstractGrabber):
+class BingGrabber(AbstractGrabber):
     """Grab images from google search"""
 
-    GOOGLE_URL = "https://www.google.co.in/search?q=%s&source=lnms&tbm=isch"
     full_image = True
+
+    BING_URL = "https://www.bing.com/images/search?q=%s"
 
     def __init__(self):
         pass
@@ -21,15 +22,17 @@ class GoogleGrabber(AbstractGrabber):
     def get_images_url(self, keyword):
         query = keyword.split()
         query = '+'.join(query)
-        url = self.GOOGLE_URL % query
+        url = self.BING_URL % query
 
-        print '> searching image on Google : ' + url
+        print '> searching image on Bing : ' + url
 
         options = webdriver.ChromeOptions()
 
         browser = webdriver.Chrome(chrome_options=options)
 
         browser.get(url)
+        print browser.get_window_size()
+        browser.maximize_window()
         time.sleep(2)
 
         elem = browser.find_element_by_tag_name("body")
@@ -43,20 +46,21 @@ class GoogleGrabber(AbstractGrabber):
 
         images_objects = []
         if self.full_image:
-            images = browser.find_elements_by_class_name("rg_meta")
+            images = browser.find_elements_by_class_name("iusc")
             for image in images:
                 image_obj = GrabbedImage()
-                image_obj.source = GrabSourceType.GOOGLE.value
-                json_content = image.get_attribute('innerHTML')
+                image_obj.source = GrabSourceType.BING.value
+                json_content = image.get_attribute('m')
                 # links for Large original image
-                image_obj.url = json.loads(json_content)["ou"]
-                image_obj.extension = json.loads(json_content)["ity"]
+                image_obj.url = json.loads(json_content)["murl"]
+                if image_obj.url.split('.')[-1] is not None:
+                    image_obj.extension = image_obj.url.split('.')[-1]
                 images_objects.append(image_obj)
         else:
-            images = browser.find_elements_by_class_name("rg_ic")
+            images = browser.find_elements_by_class_name("mimg")
             for image in images:
                 image_obj = GrabbedImage()
-                image_obj.source = GrabSourceType.GOOGLE.value
+                image_obj.source = GrabSourceType.BING.value
                 src = image.get_attribute('src')
                 if self.__is_http_url(src):
                     image_obj.url = src
