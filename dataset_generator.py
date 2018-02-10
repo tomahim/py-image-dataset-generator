@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    # print args
+    # print(args)
 
     downloader = image_downloader.ImageDownloader()
 
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     if args.size is not None:
         downloader.image_size = args.size
 
-    if args.allsources is not None:
+    if args.allsources is True:
         downloader.sources = [ALL_SOURCE]
     elif args.sources is not None:
         downloader.sources = args.sources

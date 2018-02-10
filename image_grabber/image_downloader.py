@@ -1,12 +1,13 @@
 import os
-import urllib2
+import urllib.request
 import time
 
-from google_grabber import GoogleGrabber
-from bing_grabber import BingGrabber
-from grab_settings import *
+from .bing_grabber import BingGrabber
+from .google_grabber import GoogleGrabber
+from .grab_settings import *
 from utils.string_utils import StringUtil
 import math
+import base64
 
 
 class ImageDownloader:
@@ -51,13 +52,13 @@ class ImageDownloader:
 
         nb_urls = len(images)
         if nb_urls == 0:
-            print "No image found on sources " + ",".join(list(self.sources))
+            print("No image found on sources " + ",".join(list(self.sources)))
         else:
             sub_folder_name = self.__create_destination_folder()
-            print "\n %s images found on %s, limit to download set to %s \n" % (nb_urls, self.sources, self.limit)
+            print("\n %s images found on %s, limit to download set to %s \n" % (nb_urls, self.sources, self.limit))
             self.__download_files(images[:self.limit], sub_folder_name)
             end = time.time()
-            print "\n %s images downloaded in %s sec" % (self.limit, end - start)
+            print("\n %s images downloaded in %s sec" % (self.limit, end - start))
 
     def __repart_between_image_sources(self, sources, images):
         nb_by_source = int(math.ceil(self.limit / len(sources)))
@@ -96,18 +97,19 @@ class ImageDownloader:
                 file_name = self.file_prefix + "_" + str(counter) + extension
                 f = open(os.path.join(folder_name, file_name), 'wb')
 
-                print "> grabbing %s \n >> saving file %s" % (
-                image.url if image.url else 'from base64 content', file_name)
+                print("> grabbing %s \n >> saving file %s" % (
+                    image.url if image.url else 'from base64 content', file_name)
+                )
 
                 if image.base64 is not None:
-                    f.write(image.base64.split('base64,')[1].decode('base64'))
+                    decoded_base64 = base64.decodebytes(bytes(image.base64.split('base64,')[1], 'utf-8'))
+                    f.write(decoded_base64)
                 elif image.url is not None:
-                    req = urllib2.Request(image.url, headers={'User-Agent': USER_AGENT_HEADER})
-                    raw_img = urllib2.urlopen(req).read()
+                    raw_img = urllib.request.urlopen(image.url).read()
                     f.write(raw_img)
                 f.close()
 
             except Exception as e:
-                print "error while loading/writing image "
-                print e
-                print image.url if image.url else image.base64[:50]
+                print("error while loading/writing image")
+                print(e)
+                print(image.url if image.url else image.base64[:50])
