@@ -27,6 +27,10 @@ class ImageDownloader:
 
     def download_images(self, keyword):
         start = time.time()
+
+        if not keyword:
+            raise Exception('No keyword to search')
+
         self.keyword = keyword
         self.__set_default_file_prefix()
         all_sources = [e.value for e in GrabSourceType]
@@ -47,7 +51,7 @@ class ImageDownloader:
 
         nb_urls = len(images)
         if nb_urls == 0:
-            print "No image found on sources " + self.sources
+            print "No image found on sources " + ",".join(list(self.sources))
         else:
             sub_folder_name = self.__create_destination_folder()
             print "\n %s images found on %s, limit to download set to %s \n" % (nb_urls, self.sources, self.limit)

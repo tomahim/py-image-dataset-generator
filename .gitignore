@@ -2,3 +2,4 @@ images/
 .idea/
 *.pyc
 *.log
+*.cache*

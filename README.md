@@ -20,6 +20,10 @@ Run this command to install selenium Chromedriver (needed for infinite scroll th
 
 `pip install chromedriver_installer --install-option="--chromedriver-version=2.35`
 
+### Run unit tests
+
+`python -m unittest discover`
+
 ### Usage
 
 Automatically grab *red cars* images with this command line (from the root of the project) :
