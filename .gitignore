@@ -3,3 +3,4 @@ images/
 *.pyc
 *.log
 *.cache*
+main.py

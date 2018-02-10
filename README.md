@@ -6,7 +6,7 @@ It could first grab image from internet by specifying keywords (Google images or
 
 ### Pre-requirements
 
-This project is tested with Python 2.7.14.
+This project is tested with Python 3.6.4
 
 ### Installation
 

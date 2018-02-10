@@ -3,10 +3,10 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-from abstract_grabber import AbstractGrabber
-from grabbed_image import GrabbedImage
-from grab_settings import *
-import unicodedata
+from .abstract_grabber import AbstractGrabber
+from .grabbed_image import GrabbedImage
+from .grab_settings import *
+from utils.string_utils import StringUtil
 
 
 class GoogleGrabber(AbstractGrabber):
@@ -23,7 +23,7 @@ class GoogleGrabber(AbstractGrabber):
         query = '+'.join(query)
         url = self.GOOGLE_URL % query
 
-        print '> searching image on Google : ' + url
+        print('> searching image on Google : ' + url)
 
         options = webdriver.ChromeOptions()
 
@@ -58,7 +58,7 @@ class GoogleGrabber(AbstractGrabber):
                 image_obj = GrabbedImage()
                 image_obj.source = GrabSourceType.GOOGLE.value
                 src = image.get_attribute('src')
-                if self.__is_http_url(src):
+                if StringUtil.is_http_url(src):
                     image_obj.url = src
                 else:
                     image_obj.base64 = src
@@ -68,7 +68,3 @@ class GoogleGrabber(AbstractGrabber):
         browser.close()
 
         return images_objects
-
-    def __is_http_url(self, src):
-        result = unicodedata.normalize('NFKD', src).encode('ascii', 'ignore')
-        return result[:4] == "http"
