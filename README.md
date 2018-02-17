@@ -18,10 +18,6 @@ Get the python dependencies
 
 `pip install -r requirements.txt`
 
-Run this command to install selenium Chromedriver (needed for infinite scroll through search pages)
-
-`pip install chromedriver_installer --install-option="--chromedriver-version=2.35"`
-
 ### Run unit tests
 
 `python -m unittest discover`
@@ -59,3 +55,12 @@ optional arguments:
   -allsources, -as      If you want your images mixed from all download
                         sources : Bing, Google
 ```
+
+### Common issues
+
+**WebDriverException: Message: unknown error: cannot find Chrome binary**
+
+Make sure chromedriver is well installed on your PATH (run the `which chromedriver` command on Linux and then `echo $PATH`). Also Chrome should be installed on your machine (or the `chromium-package` for Linux).
+
+You can install the chromedriver with this command ([more information here](https://pypi.python.org/pypi/chromedriver_installer)):
+`pip install chromedriver_installer --install-option="--chromedriver-version=2.35"`
