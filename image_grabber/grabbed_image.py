@@ -1,5 +1,4 @@
 class GrabbedImage:
-
     url = None
     extension = None
     base64 = None

@@ -3,6 +3,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from .grab_settings import *
+from typing import List
 
 from .abstract_grabber import AbstractGrabber
 from .grabbed_image import GrabbedImage
@@ -13,13 +14,12 @@ class BingGrabber(AbstractGrabber):
     """Grab images from google search"""
 
     full_image = True
-
     BING_URL = "https://www.bing.com/images/search?q=%s"
 
     def __init__(self):
         pass
 
-    def get_images_url(self, keyword):
+    def get_images_url(self, keyword: str) -> List[GrabbedImage]:
         query = keyword.split()
         query = '+'.join(query)
         url = self.BING_URL % query
@@ -43,7 +43,7 @@ class BingGrabber(AbstractGrabber):
             time.sleep(0.2)
             no_of_pages_down -= 1
 
-        images_objects = []
+        images_objects: List[GrabbedImage] = []
         if self.full_image:
             images = browser.find_elements_by_class_name("iusc")
             for image in images:

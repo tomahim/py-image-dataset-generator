@@ -1,7 +1,9 @@
 import os
 import urllib.request
 import time
+from typing import NoReturn, List
 
+from image_grabber.grabbed_image import GrabbedImage
 from .bing_grabber import BingGrabber
 from .google_grabber import GoogleGrabber
 from .grab_settings import *
@@ -26,7 +28,7 @@ class ImageDownloader:
         self.destination = destination
         self.limit = limit
 
-    def download_images(self, keyword):
+    def download_images(self, keyword: str) -> NoReturn:
         start = time.time()
 
         if not keyword:
@@ -36,7 +38,7 @@ class ImageDownloader:
         self.__set_default_file_prefix()
         all_sources = [e.value for e in GrabSourceType]
         selected_sources = all_sources if ALL_SOURCE in self.sources else self.sources
-        images = []
+        images: List[GrabbedImage] = []
         if GrabSourceType.GOOGLE.value in selected_sources:
             google_grabber = GoogleGrabber()
             google_grabber.full_image = self.image_size == ImageSize.LARGE
@@ -60,19 +62,19 @@ class ImageDownloader:
             end = time.time()
             print("\n %s images downloaded in %s sec" % (self.limit, end - start))
 
-    def __repart_between_image_sources(self, sources, images):
+    def __repart_between_image_sources(self, sources: List[str], images: List[GrabbedImage]) -> List[GrabbedImage]:
         nb_by_source = int(math.ceil(self.limit / len(sources)))
         repart_images = []
         for source in sources:
             repart_images.extend([img for img in images if img.source == source][:nb_by_source])
         return repart_images
 
-    def __set_default_file_prefix(self):
+    def __set_default_file_prefix(self) -> NoReturn:
         """if no specified file prefix, build one from keyword"""
         if self.file_prefix is None:
             self.file_prefix = StringUtil.underscore_and_lowercase(self.keyword)
 
-    def __create_destination_folder(self):
+    def __create_destination_folder(self) -> str:
         """ set default destination to 'images', create and return sub_folder based on keyword name """
         if self.destination is None:
             self.destination = 'images'
@@ -85,7 +87,7 @@ class ImageDownloader:
             os.mkdir(sub_folder)
         return sub_folder
 
-    def __download_files(self, images, folder_name):
+    def __download_files(self, images: List[GrabbedImage], folder_name: str) -> NoReturn:
         """urls param is a list of GrabbedImage object with url / extension or just base64"""
         for i, image in enumerate(images):
             if i == self.limit:

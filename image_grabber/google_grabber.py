@@ -2,6 +2,7 @@ import json
 import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from typing import List
 
 from .abstract_grabber import AbstractGrabber
 from .grabbed_image import GrabbedImage
@@ -12,13 +13,13 @@ from utils.string_utils import StringUtil
 class GoogleGrabber(AbstractGrabber):
     """Grab images from google search"""
 
-    GOOGLE_URL = "https://www.google.co.in/search?q=%s&source=lnms&tbm=isch"
     full_image = True
+    GOOGLE_URL = "https://www.google.co.in/search?q=%s&source=lnms&tbm=isch"
 
     def __init__(self):
         pass
 
-    def get_images_url(self, keyword):
+    def get_images_url(self, keyword: str) -> List[GrabbedImage]:
         query = keyword.split()
         query = '+'.join(query)
         url = self.GOOGLE_URL % query
@@ -41,7 +42,7 @@ class GoogleGrabber(AbstractGrabber):
             time.sleep(0.2)
             no_of_pages_down -= 1
 
-        images_objects = []
+        images_objects: List[GrabbedImage] = []
         if self.full_image:
             images = browser.find_elements_by_class_name("rg_meta")
             for image in images:
