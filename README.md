@@ -6,7 +6,9 @@ It could first grab image from internet by specifying keywords (Google images or
 
 ### Pre-requirements
 
-This project is tested with Python 3.6.4
+This project is tested with Python 3.5 and more.
+
+Chrome installed on *Windows* or chromium-browser package on *Linux* (`sudo apt-get install chromium-browser`)
 
 ### Installation
 
