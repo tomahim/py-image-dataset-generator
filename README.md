@@ -2,8 +2,6 @@
 
 ## Collect and generate large image datasets with minimal effort
 
-### Note
-
 This tool automatically grab images from Google or Bing by specifying keywords and optionnaly resize it. Then you can generate new one from an existing dataset adding noise, rotate, transform etc (developement in progress).
 
 ### Table of content
