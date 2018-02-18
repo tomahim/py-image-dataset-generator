@@ -8,9 +8,9 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
 
-    def tuple_arg(s):
+    def resize_arg(s):
         try:
-            x, y = map(int, s.split(','))
+            x, y = map(int, s.split('x'))
             return x, y
         except:
             raise argparse.ArgumentTypeError(
@@ -33,17 +33,17 @@ if __name__ == '__main__':
                              % DEFAULT_DOWNLOAD_LIMIT,
                         type=int)
 
-    possible_sizes = ','.join([e.value for e in ImageSize])
-    parser.add_argument('-size',
-                        '-s',
-                        help='Size of source image to download : %s (default: %s)'
-                             % (possible_sizes, DEFAULT_IMAGE_SIZE))
+    parser.add_argument('-thumbnail',
+                        '-thumb',
+                        action="store_true",
+                        default=False,
+                        help='Download the thumbnail instead of the full original image')
 
     parser.add_argument('-resize',
                         dest="resize",
                         default=None,
-                        type=tuple_arg,
-                        help='Resize the downloaded image in a specific size. Example: --resize=32,'
+                        type=resize_arg,
+                        help='Resize the downloaded image in a specific size. Example: --resize=32x'
                              "32 will output a 32px x 32px file")
 
     possible_datasources = ', '.join([e.value for e in GrabSourceType])
@@ -56,7 +56,8 @@ if __name__ == '__main__':
 
     parser.add_argument('-allsources',
                         '-as',
-                        action="store_true", default=False,
+                        action="store_true",
+                        default=False,
                         help='If you want your images mixed from all download sources : %s'
                              % (possible_datasources))
 
@@ -72,9 +73,6 @@ if __name__ == '__main__':
     if args.limit is not None:
         downloader.limit = int(args.limit)
 
-    if args.size is not None:
-        downloader.image_size = args.size
-
     if args.allsources is True:
         downloader.sources = [ALL_SOURCE]
     elif args.sources is not None:
@@ -82,6 +80,9 @@ if __name__ == '__main__':
 
     if args.resize is not None:
         downloader.resize = args.resize
+
+    if args.thumbnail is True:
+        downloader.full_image = False
 
     keyword = args.image_keyword[0]
     downloader.download_images(keyword)

@@ -12,13 +12,6 @@ class GrabSourceType(Enum):
 
 ALL_SOURCE = 'all'
 
-
-class ImageSize(Enum):
-    LARGE = 'large'
-    SMALL = 'small'
-
-
 DEFAULT_GRAB_SOURCE_TYPE = GrabSourceType.GOOGLE.value
-DEFAULT_IMAGE_SIZE = ImageSize.LARGE.value
 DEFAULT_DOWNLOAD_LIMIT = 50
 DEFAULT_DESTINATION_FOLDER = "images"

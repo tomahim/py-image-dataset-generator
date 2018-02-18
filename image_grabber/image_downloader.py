@@ -22,7 +22,7 @@ class ImageDownloader:
     destination = DEFAULT_DESTINATION_FOLDER
     limit = DEFAULT_DOWNLOAD_LIMIT
     file_prefix = None
-    image_size = ImageSize.LARGE
+    full_image = True
     resize = None
 
     sources = [DEFAULT_GRAB_SOURCE_TYPE]
@@ -45,12 +45,12 @@ class ImageDownloader:
         images = []
         if GrabSourceType.GOOGLE.value in selected_sources:
             google_grabber = GoogleGrabber()
-            google_grabber.full_image = self.image_size == ImageSize.LARGE
+            google_grabber.full_image = self.full_image
             images.extend(google_grabber.get_images_url(self.keyword))
 
         if GrabSourceType.BING.value in selected_sources:
             bing_grabber = BingGrabber()
-            bing_grabber.full_image = self.image_size == ImageSize.LARGE
+            bing_grabber.full_image = self.full_image
             images.extend(bing_grabber.get_images_url(self.keyword))
 
         if ALL_SOURCE in self.sources or len(selected_sources) > 1:

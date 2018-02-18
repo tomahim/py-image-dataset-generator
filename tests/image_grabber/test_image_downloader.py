@@ -16,7 +16,7 @@ class TestImageDownloader(unittest.TestCase):
         """ ImageDownloader > it should load default values """
         self.assertIsNotNone(self.downloader)
         self.assertEqual(self.downloader.limit, DEFAULT_DOWNLOAD_LIMIT)
-        self.assertEqual(self.downloader.image_size.value, DEFAULT_IMAGE_SIZE)
+        self.assertEqual(self.downloader.full_image, True)
         self.assertEqual(self.downloader.destination, DEFAULT_DESTINATION_FOLDER)
 
     def test_download_with_no_keyword(self):
