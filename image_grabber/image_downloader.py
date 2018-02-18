@@ -38,7 +38,7 @@ class ImageDownloader:
         self.__set_default_file_prefix()
         all_sources = [e.value for e in GrabSourceType]
         selected_sources = all_sources if ALL_SOURCE in self.sources else self.sources
-        images: List[GrabbedImage] = []
+        images = []
         if GrabSourceType.GOOGLE.value in selected_sources:
             google_grabber = GoogleGrabber()
             google_grabber.full_image = self.image_size == ImageSize.LARGE

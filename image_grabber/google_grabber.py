@@ -42,7 +42,7 @@ class GoogleGrabber(AbstractGrabber):
             time.sleep(0.2)
             no_of_pages_down -= 1
 
-        images_objects: List[GrabbedImage] = []
+        images_objects = []
         if self.full_image:
             images = browser.find_elements_by_class_name("rg_meta")
             for image in images:
