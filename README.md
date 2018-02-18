@@ -37,10 +37,10 @@ python -m unittest discover
 Automatically grab *red cars* images with this command line (from the root of the project) :
 
 ```
-python dataset_generator.py "red car" -limit 50 -dest images -size large
+python dataset_generator.py "red car" -limit 150 -dest folder_name -resize=250x250
 ```
     
-After running this command sample, you will have 50 images of red cars in your /images/red_car folder. 
+After running this command, you will have 150 images of red cars (resized 250px by 250px) in the /folder_name/red_car folder. 
 
 You can find all possible parameters in the table below (also available with the `--help` command) :
 
