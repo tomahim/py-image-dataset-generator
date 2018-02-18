@@ -6,7 +6,7 @@ It could first grab image from internet by specifying keywords (Google images or
 
 ### Pre-requirements
 
-This project is tested with Python 3.5 and more.
+This project is tested with Python 3.5.4 and more.
 
 Chrome installed on *Windows* or chromium-browser package on *Linux* (`sudo apt-get install chromium-browser`)
 
@@ -42,18 +42,22 @@ positional arguments:
   image_keyword         keyword to search
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -dest DEST, -d DEST   Folder destination (default: images/). A sub folder is
-                        created for each keywords
-  -limit LIMIT, -l LIMIT
-                        Number of files to download (default: 50)
-  -size SIZE, -s SIZE   Size of image to download : large,small (default:
-                        large)
-  -source SOURCES, -src SOURCES
-                        Data source for download : Bing, Google (default:
-                        Google)
-  -allsources, -as      If you want your images mixed from all download
-                        sources : Bing, Google
+  -h, --help             show this help message and exit
+  -dest DEST, -d DEST    Folder destination (default: images/). A sub folder is
+                         created for each keywords
+  -limit LIMIT, -l LIMIT Number of files to download (default: 50)
+  -size SIZE, -s SIZE    Size of image to download : large,small (default:
+                         large)
+                        
+  -resize RESIZE         Resize the downloaded image in a specific size.
+                         Example: --resize=32,32 will output a 32px x 32px file
+                        
+  -source SOURCES, -src  SOURCES
+                         Data source for download : Bing, Google (default:
+                         Google)
+                        
+  -allsources, -as       If you want your images mixed from all download
+                         sources : Bing, Google
 ```
 
 ### Common issues
