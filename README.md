@@ -20,13 +20,17 @@ Get the python dependencies
 
 ### Run unit tests
 
-`python -m unittest discover`
+```
+python -m unittest discover
+```
 
 ### Usage
 
 Automatically grab *red cars* images with this command line (from the root of the project) :
 
-`python dataset_generator.py "red car" -limit 50 -dest images -size large`
+```
+python dataset_generator.py "red car" -limit 50 -dest images -size large
+```
     
 In this example, you will have 50 images of red cars in your /images/red_car folder. 
 
