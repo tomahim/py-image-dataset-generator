@@ -32,37 +32,19 @@ Automatically grab *red cars* images with this command line (from the root of th
 python dataset_generator.py "red car" -limit 50 -dest images -size large
 ```
     
-In this example, you will have 50 images of red cars in your /images/red_car folder. 
+After running this command sample, you will have 50 images of red cars in your /images/red_car folder. 
 
-Here is the full command line usage description : 
+You can find all possible parameters in the table below (also available with the `--help` command) :
 
-```
-python dataset_generator.py --help
-usage: dataset_generator.py [-h] [-dest DEST] [-limit LIMIT] [-size SIZE]
-                            [-source SOURCES] [-allsources]
-                            image_keyword
+Parameters  | Description
+---    | --- 
+Keyword *(required)* | The first parameter should be a keyword describing the images to search for. <br><br> `python dataset_generator.py "red car"`
+Destination folder <br>*-dest or -d* | Specify the destination folder to save files (default: images/) <br><br> `python dataset_generator.py "red car" -dest=your_folder`
+Limit number <br>*-limit or -l* | Specify the number of files to download (default: 50) <br><br> `python dataset_generator.py "red car" -limit 200`
+Size <br>*-size or -s* | Determine if the downloaded image should be the full original image or a thumbnail : large or small (default: large) <br><br>   `python dataset_generator.py "red car" -size small`
+Resize image <br>*-limit or -l* | Resize downloaded images on the fly, to get a dataset formatted with the same size (default: no resizing). The parameter should be a couple of number representing the width and height (32,32 will ouput 32px x 32px image files) <br><br>  `python dataset_generator.py "red car" -resize=32,32"`
+Grab source <br>*-source, -src or -allsources* |  Choose the website to grab images : Google and/or Bing (default: Google). *-allsources* parameter can be use to. It will equally mix image files from all available sources <br><br> `python dataset_generator.py "red car" -source Google` (single source) <br> `python dataset_generator.py "red car" -source Google -source Bing` (multi source)<br> `python dataset_generator.py "red car" -allsources` (all sources)
 
-positional arguments:
-  image_keyword         keyword to search
-
-optional arguments:
-  -h, --help             show this help message and exit
-  -dest DEST, -d DEST    Folder destination (default: images/). A sub folder is
-                         created for each keywords
-  -limit LIMIT, -l LIMIT Number of files to download (default: 50)
-  -size SIZE, -s SIZE    Size of image to download : large,small (default:
-                         large)
-                        
-  -resize RESIZE         Resize the downloaded image in a specific size.
-                         Example: --resize=32,32 will output a 32px x 32px file
-                        
-  -source SOURCES, -src  SOURCES
-                         Data source for download : Bing, Google (default:
-                         Google)
-                        
-  -allsources, -as       If you want your images mixed from all download
-                         sources : Bing, Google
-```
 
 ### Common issues
 
