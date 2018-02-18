@@ -52,8 +52,6 @@ class BingGrabber(AbstractGrabber):
                 json_content = image.get_attribute('m')
                 # links for Large original image
                 image_obj.url = json.loads(json_content)["murl"]
-                if image_obj.url.split('.')[-1] is not None:
-                    image_obj.extension = image_obj.url.split('.')[-1]
                 images_objects.append(image_obj)
         else:
             images = browser.find_elements_by_class_name("mimg")

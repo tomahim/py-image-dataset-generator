@@ -1,15 +1,18 @@
+import base64
+import math
 import os
-import urllib.request
 import time
-from typing import NoReturn, List
+import urllib.request
+from typing import NoReturn, List, Tuple
+
+from skimage import io as _io
+from skimage.transform import resize
 
 from image_grabber.grabbed_image import GrabbedImage
+from utils.string_utils import StringUtil
 from .bing_grabber import BingGrabber
 from .google_grabber import GoogleGrabber
 from .grab_settings import *
-from utils.string_utils import StringUtil
-import math
-import base64
 
 
 class ImageDownloader:
@@ -20,6 +23,7 @@ class ImageDownloader:
     limit = DEFAULT_DOWNLOAD_LIMIT
     file_prefix = None
     image_size = ImageSize.LARGE
+    resize = None
 
     sources = [DEFAULT_GRAB_SOURCE_TYPE]
 
@@ -97,21 +101,43 @@ class ImageDownloader:
                 counter = len([i for i in os.listdir(folder_name) if self.file_prefix in i]) + 1
                 extension = ".jpg" if image.extension is None else "." + image.extension
                 file_name = self.file_prefix + "_" + str(counter) + extension
-                f = open(os.path.join(folder_name, file_name), 'wb')
+                full_destination = os.path.join(folder_name, file_name)
+                if self.resize is not None:
+                    self.__resize_and_save(image, self.resize, full_destination)
+                else:
+                    print("> grabbing %s \n >> saving file %s" % (
+                        image.url if image.url else 'from base64 content', file_name)
+                          )
 
-                print("> grabbing %s \n >> saving file %s" % (
-                    image.url if image.url else 'from base64 content', file_name)
-                )
+                    image_to_write = None
+                    if image.base64 is not None:
+                        image_to_write = self.__decode_base64(image.base64)
+                    elif image.url is not None:
+                        image_to_write = urllib.request.urlopen(image.url).read()
 
-                if image.base64 is not None:
-                    decoded_base64 = base64.decodebytes(bytes(image.base64.split('base64,')[1], 'utf-8'))
-                    f.write(decoded_base64)
-                elif image.url is not None:
-                    raw_img = urllib.request.urlopen(image.url).read()
-                    f.write(raw_img)
-                f.close()
+                    f = open(full_destination, 'wb')
+                    f.write(image_to_write)
+                    f.close()
 
             except Exception as e:
                 print("error while loading/writing image")
                 print(e)
                 print(image.url if image.url else image.base64[:50])
+
+    def __resize_and_save(self, image: GrabbedImage, size: Tuple[int], dest: str):
+        """ Resize the file with size Tuple (width, height) and save it to the destination path """
+        image_url = None
+        if image.url is not None:
+            image_url = image.url
+        elif image.base64 is not None:
+            # in case of base64 content, need to physically create the file
+            f = open(dest, 'wb')
+            f.write(self.__decode_base64(image.base64))
+            f.close()
+            image_url = dest
+
+        image_array = _io.imread(image_url)
+        _io.imsave(dest, resize(image_array, size))
+
+    def __decode_base64(self, base_64: bytes):
+        return base64.decodebytes(bytes(base_64.split('base64,')[1], 'utf-8'))
