@@ -1,8 +1,8 @@
 # Python image dataset generator
 
-## Collect and generate large image datasets with minimal effort
+## Download and generate large image datasets with minimal effort
 
-This tool automatically grab images from Google or Bing and optionaly resize them. Then you can generate new images from an existing dataset by adding noise, rotate, transform etc (developement in progress).
+This tool automatically collect images from Google or Bing and optionaly resize them. Then you can generate new images from an existing dataset by adding noise, rotate, transform etc (developement in progress).
 
 ### Table of content
 
