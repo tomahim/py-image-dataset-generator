@@ -107,7 +107,7 @@ class ImageDownloader:
                 else:
                     print("> grabbing %s \n >> saving file %s" % (
                         image.url if image.url else 'from base64 content', file_name)
-                    )
+                          )
 
                     image_to_write = None
                     if image.base64 is not None:
@@ -141,5 +141,3 @@ class ImageDownloader:
 
     def __decode_base64(self, base_64: bytes):
         return base64.decodebytes(bytes(base_64.split('base64,')[1], 'utf-8'))
-
-
