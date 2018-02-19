@@ -1,4 +1,4 @@
-# Python image dataset augmentation for Machine learning projects
+# Image dataset generator for Machine learning projects
 
 ## Download large amount of images and dataset augmentation with minimal effort
 
