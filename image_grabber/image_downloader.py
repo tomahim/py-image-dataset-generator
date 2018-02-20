@@ -9,7 +9,7 @@ from skimage import io as _io
 from skimage.transform import resize
 
 from image_grabber.grabbed_image import GrabbedImage
-from utils.string_utils import StringUtil
+from utils.utils import StringUtil
 from .bing_grabber import BingGrabber
 from .google_grabber import GoogleGrabber
 from .grab_settings import *

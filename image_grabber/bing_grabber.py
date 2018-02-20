@@ -7,7 +7,7 @@ from typing import List
 
 from .abstract_grabber import AbstractGrabber
 from .grabbed_image import GrabbedImage
-from utils.string_utils import StringUtil
+from utils.utils import StringUtil
 
 
 class BingGrabber(AbstractGrabber):
