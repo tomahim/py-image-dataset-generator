@@ -24,6 +24,16 @@ class FileUtil:
         """Constructor for FileUtil"""
 
     @staticmethod
+    def folder_total_size(folder_path: str) -> float:
+        return sum([os.path.getsize(os.path.join(folder_path, f))
+                    for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f))
+                    and FileUtil.is_image(os.path.join(folder_path, f))])
+
+    @staticmethod
+    def mean_folder_file_size(folder_path: str) -> float:
+        return FileUtil.folder_total_size(folder_path) / FileUtil.nb_file_in_folder(folder_path)
+
+    @staticmethod
     def nb_file_in_folder(folder_path: str) -> int:
         num_files = len([f for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f))
                          and FileUtil.is_image(os.path.join(folder_path, f))])
