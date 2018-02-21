@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABCMeta
-from scipy import ndimage
+from scipy import ndimage, ndarray
 
 from skimage.transform import rotate
 
@@ -17,7 +17,7 @@ class Operation:
         self.probability = probability
 
     @abstractmethod
-    def execute(self, file_path: str):
+    def execute(self, image_array: ndarray):
         pass
 
 
@@ -28,9 +28,8 @@ class RotateLeft(Operation):
         super().__init__(probability)
         self.degree = degree
 
-    def execute(self, file_path: str):
-        image = FileUtil.open(file_path)
-        return rotate(image, self.degree)
+    def execute(self, image_array: ndarray):
+        return rotate(image_array, self.degree)
 
 
 class Blur(Operation):
@@ -40,9 +39,8 @@ class Blur(Operation):
         super().__init__(probability)
         self.intensity = intensity
 
-    def execute(self, file_path: str):
-        image = FileUtil.open(file_path)
-        return ndimage.uniform_filter(image, size=(11, 11, 1))
+    def execute(self, image_array: ndarray):
+        return ndimage.uniform_filter(image_array, size=(11, 11, 1))
 
 
 class OperationPipeline:

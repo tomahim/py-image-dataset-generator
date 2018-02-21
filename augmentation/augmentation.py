@@ -38,10 +38,11 @@ class DatasetGenerator(OperationPipeline):
         for file in os.listdir(self.folder_path):
             file_path = os.path.join(self.folder_path, file)
             if FileUtil.is_image(file_path):
+                augmented_image = FileUtil.open(file_path)
                 for operation in self.operations:
                     random_num = random.uniform(0, 1)
                     do_operation = random_num <= operation.probability
                     if do_operation:
-                        augmented_image = operation.execute(file_path)
-                        if self.save_to_disk:
-                            FileUtil.save_file(augmented_image, self.folder_destination, "aug")
+                        augmented_image = operation.execute(augmented_image)
+                if self.save_to_disk:
+                    FileUtil.save_file(augmented_image, self.folder_destination, "aug")
