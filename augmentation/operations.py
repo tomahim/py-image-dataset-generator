@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABCMeta
-from sci    py import ndimage
+from scipy import ndimage
 
 from skimage.transform import rotate
 
@@ -43,3 +43,16 @@ class Blur(Operation):
     def execute(self, file_path: str):
         image = FileUtil.open(file_path)
         return ndimage.uniform_filter(image, size=(11, 11, 1))
+
+
+class OperationPipeline:
+    operations = []
+
+    def blur(self, probability: float, intensity: float):
+        self.__add_operation(Blur(probability, intensity))
+
+    def rotate_left(self, probability: float, degree: float):
+        self.__add_operation(RotateLeft(probability, degree))
+
+    def __add_operation(self, operation: Operation):
+        self.operations.append(operation)

@@ -1,21 +1,8 @@
 import random
 import os
 
-from augmentation.operations import Blur, RotateLeft, Operation
+from augmentation.operations import OperationPipeline
 from utils.utils import FileUtil
-
-
-class OperationPipeline:
-    operations = []
-
-    def blur(self, probability: float, intensity: float):
-        self.__add_operation(Blur(probability, intensity))
-
-    def rotate_left(self, probability: float, degree: float):
-        self.__add_operation(RotateLeft(probability, degree))
-
-    def __add_operation(self, operation: Operation):
-        self.operations.append(operation)
 
 
 class DatasetGenerator(OperationPipeline):
@@ -32,7 +19,7 @@ class DatasetGenerator(OperationPipeline):
         super().__init__()
         self.folder_path = folder_path
         self.max_files = max_files
-        self.save_to_disk = self.save_to_disk
+        self.save_to_disk = save_to_disk
         self.folder_destination = folder_destination
 
     def preview(self):
@@ -58,4 +45,3 @@ class DatasetGenerator(OperationPipeline):
                         augmented_image = operation.execute(file_path)
                         if self.save_to_disk:
                             FileUtil.save_file(augmented_image, self.folder_destination, "aug")
-
