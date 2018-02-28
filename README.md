@@ -16,7 +16,14 @@ This tool automatically collect images from Google or Bing and optionaly resize 
 
 This project is tested with Python 3.5.4 and more.
 
-Chrome should be installed on *Windows* or chromium-browser package on *Linux* (`sudo apt-get install chromium-browser`)
+*Linux*
+
+- chromium-browser package (`sudo apt-get install chromium-browser`)
+
+*Windows*
+
+- Chrome should be installed
+- [Microsoft Visual C++ Build Tools](https://www.scivision.co/python-windows-visual-c++-14-required/) (scikit image dependency, [see for more info](https://www.scivision.co/python-windows-visual-c++-14-required/))
 
 ### Installation
 
@@ -62,3 +69,8 @@ Make sure chromedriver is well installed on your PATH (run the `which chromedriv
 
 You can install the chromedriver with this command ([more information here](https://pypi.python.org/pypi/chromedriver_installer)):
 `pip install chromedriver_installer --install-option="--chromedriver-version=2.35"`
+
+
+**error: Microsoft Visual C++ 14.0 is required. Get it with "Microsoft Visual C++ Build Tools": [http://landinghub.visualstudio.com/visual-cpp-build-tools](https://www.scivision.co/python-windows-visual-c++-14-required/)**
+
+As this repo use scikit-image for image processing, on Windows you need Microsoft Visual C++ Build Tools which is provided with Visual Studio (think to check the C++ options on installation). You can install it with the link below.
