@@ -64,6 +64,24 @@ class Resize(Operation):
         return resize(image_array, (self.width, self.height))
 
 
+class HorizontalFlip(Operation):
+
+    def __init__(self, probability: float) -> None:
+        super().__init__(probability)
+
+    def execute(self, image_array: ndarray):
+        return image_array[:, ::-1]
+
+
+class VerticalFlip(Operation):
+
+    def __init__(self, probability: float) -> None:
+        super().__init__(probability)
+
+    def execute(self, image_array: ndarray):
+        return image_array[::-1, :]
+
+
 class OperationPipeline:
     operations = []
 
@@ -78,6 +96,12 @@ class OperationPipeline:
 
     def resize(self, probability: float, width: int, height: int):
         self.__add_operation(Resize(probability, width, height))
+
+    def horizontal_flip(self, probability: float):
+        self.__add_operation(HorizontalFlip(probability))
+
+    def vertical_flip(self, probability: float):
+        self.__add_operation(VerticalFlip(probability))
 
     def __add_operation(self, operation: Operation):
         self.operations.append(operation)

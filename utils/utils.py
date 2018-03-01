@@ -1,6 +1,7 @@
 import unicodedata
 
 import os
+from typing import List
 
 from numpy.core.multiarray import ndarray
 from skimage import io
@@ -38,8 +39,7 @@ class FileUtil:
 
     @staticmethod
     def nb_file_images_in_folder(folder_path: str) -> int:
-        num_files = len([f for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f))
-                         and FileUtil.is_image(os.path.join(folder_path, f))])
+        num_files = len(FileUtil.get_images_file_path_array(folder_path))
         return num_files
 
     @staticmethod
@@ -49,6 +49,12 @@ class FileUtil:
     @staticmethod
     def is_image(path: str) -> bool:
         return FileUtil.get_file_extension(path).lower() in FileUtil.image_extensions
+
+    @staticmethod
+    def get_images_file_path_array(folder_path) -> List[str]:
+        return [os.path.join(folder_path, f) for f in os.listdir(folder_path) if
+                os.path.isfile(os.path.join(folder_path, f))
+                and FileUtil.is_image(os.path.join(folder_path, f))]
 
     @staticmethod
     def open(path: str) -> ndarray:
@@ -71,4 +77,3 @@ class FileUtil:
         FileUtil.create_folder(folder_path)
         full_destination = FileUtil.generate_next_file_path(folder_path, file_prefix)
         io.imsave(full_destination, processed_image)
-
