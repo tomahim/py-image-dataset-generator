@@ -26,6 +26,7 @@ TADA ! In few seconds you will get 10 000 different images of funny cats to trai
     * [Image augmentation](#image-augmentation)
     * [Create a custom image augmentation pipeline](#create-a-custom-image-augmentation-pipeline)
 * [Common issues](#common-issues)
+* [Acknowledgments](#acknowledgments)
 
 ### Pre-requirements
 
@@ -127,3 +128,11 @@ Make sure chromedriver is well installed on your PATH (run the `which chromedriv
 
 You can install the chromedriver with this command ([more information here](https://pypi.python.org/pypi/chromedriver_installer)):
 `pip install chromedriver_installer --install-option="--chromedriver-version=2.35"`
+
+### Acknowledgments
+
+- This repo is *largely inspired* by the work of Marcus Bloice on his [Augmentor](https://arxiv.org/abs/1708.04680) project. Many thanks for the great work and the useful documentation.
+
+- I also pick some ideas from [this great serie of articles](https://www.pyimagesearch.com/2017/12/11/image-classification-with-keras-and-deep-learning/) for the *automatic* part to grab images.
+
+The goal of this repo is mainly to provide the smaller python library as possible to generate an image dataset, without a big framework like Keras, Tflearn etc, which can be hard to configure and install for new people working on Data Science / AI.
