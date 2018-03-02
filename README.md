@@ -80,13 +80,14 @@ python augmentation.py -folder=your_folder -limit=10000
 
 By default, this command will randomly apply these image transformations :
 
-- blur (with a probability of 10%)
-- random noise (with a probability of 50%)
-- horizontal flip (with a probability of 30%)
+- Blur image (with a probability of 10%)
+- Add Random noise (with a probability of 50%)
+- Horizontal flip (with a probability of 30%)
 - Left or Right rotation between 0 or 25 degree (with a probability of 50%)
-- ... to be completed
 
-You can customize these default values by editing the `augmentation_config.py` file or by making [your own image augmentation pipeline](#create-a-custom-augmentation-pipeline)
+- *... to be completed*
+
+You can customize these default values by editing the `augmentation_config.py` file or by making [your own image augmentation pipeline](#create-a-custom-image-augmentation-pipeline)
 
 You can find all possible parameters in the table below (also available with the `--help` parameter) :
 
