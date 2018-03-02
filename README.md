@@ -1,6 +1,6 @@
 # Image dataset generator for Machine learning projects
 
-## Download large amount of images and dataset augmentation with minimal effort
+### Get a large image dataset with minimal effort
 
 This tool **automatically collect images** from Google or Bing and optionally resize them. 
 
@@ -24,7 +24,7 @@ TADA ! In few seconds you will get 10 000 different images of funny cats to trai
 * [Usage](#usage)
     * [Download images](#download-images-from-the-web)
     * [Image augmentation](#image-augmentation)
-    * [Create a custom augmentation pipeline](#create-a-custom-augmentation-pipeline)
+    * [Create a custom image augmentation pipeline](#create-a-custom-image-augmentation-pipeline)
 * [Common issues](#common-issues)
 
 ### Pre-requirements
@@ -78,7 +78,7 @@ python augmentation.py -folder=your_folder -limit=10000
 
 10 000 augmented images will output by default to the "output" folder inside your image folder.
 
-By default, this command will apply random these image transformations :
+By default, this command will randomly apply these image transformations :
 
 - blur (with a probability of 10%)
 - random noise (with a probability of 50%)
@@ -86,7 +86,7 @@ By default, this command will apply random these image transformations :
 - Left or Right rotation between 0 or 25 degree (with a probability of 50%)
 - ... to be completed
 
-You can customize these arbitrary default values by editing the `augmentation_config.py` file or by making [your own image augmentation pipeline](#create-a-custom-augmentation-pipeline)
+You can customize these default values by editing the `augmentation_config.py` file or by making [your own image augmentation pipeline](#create-a-custom-augmentation-pipeline)
 
 You can find all possible parameters in the table below (also available with the `--help` parameter) :
 
@@ -96,7 +96,7 @@ Keyword *(required)* | Folder input path containing images that will be augmente
 Destination folder <br>*-dest or -d* | Specify the destination folder to save augmented files (default: /your_folder/output) <br><br> `python augmentation.py -folder=your_folder -limit=50 -dest=other_folder`
 Limit number <br>*-limit or -l* | Number of image to generate by augmentation (default: 50)
 
-### Create a custom image augmentation pipeline
+#### Create a custom image augmentation pipeline
 
 ```python
 from augmentation.augmentation import DatasetGenerator
