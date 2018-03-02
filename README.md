@@ -1,4 +1,4 @@
-# Image dataset generator for Machine learning projects
+# Image dataset generator for Deep learning projects
 
 ### Get a large image dataset with minimal effort
 
