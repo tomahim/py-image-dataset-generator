@@ -11,7 +11,7 @@ python download.py "funny cats" -limit=100 -dest=folder_name -resize=250x250
 Then you can **randomly generate new images** with image augmentation from an existing folder. It will add noise, rotate, transform, flip, blur on random images.
 
 ```
-python augmentation.py -folder=my_folder/funny_cats -limit=10000 -dest=folder_name -resize=250x250
+python augmentation.py -folder=my_folder/funny_cats -limit=10000
 ```
 
 TADA ! In few seconds you will get 10 000 different images of funny cats to train your favorite deep learning algorithm !
