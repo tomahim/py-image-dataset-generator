@@ -1,3 +1,4 @@
+scipy
 scikit-image==0.13.1
 chromedriver==2.24.1
 chromedriver-installer==0.0.6
