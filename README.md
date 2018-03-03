@@ -1,5 +1,7 @@
 # Image dataset generator for Deep learning projects
 
+[![Join the chat at https://gitter.im/py-image-dataset-generator/Lobby](https://badges.gitter.im/py-image-dataset-generator/Lobby.svg)](https://gitter.im/py-image-dataset-generator/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ### Get a large image dataset with minimal effort
 
 This tool **automatically collect images** from Google or Bing and optionally resize them. 
