@@ -50,3 +50,5 @@ class DatasetGenerator(OperationPipeline):
                     augmented_image = operation.execute(augmented_image)
             if self.save_to_disk:
                 FileUtil.save_file(augmented_image, self.folder_destination, "aug")
+
+        print('%s generated in the folder %s' % (self.num_files, self.folder_destination))

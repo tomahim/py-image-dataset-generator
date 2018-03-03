@@ -133,6 +133,6 @@ You can install the chromedriver with this command ([more information here](http
 
 - This repo is *largely inspired* by the work of Marcus Bloice on his [Augmentor](https://arxiv.org/abs/1708.04680) project. Many thanks for the great work and the useful documentation.
 
-- I also pick some ideas from [this great serie of articles](https://www.pyimagesearch.com/2017/12/11/image-classification-with-keras-and-deep-learning/) for the *automatic* part to grab images.
+- I also pick some ideas from [this great series of articles](https://www.pyimagesearch.com/2017/12/11/image-classification-with-keras-and-deep-learning/) for the *automatic* part to grab images.
 
 The goal of this repo is mainly to provide the smaller python library as possible to generate an image dataset, without a big framework like Keras, Tflearn etc, which can be hard to configure and install for new people working on Data Science / AI.
