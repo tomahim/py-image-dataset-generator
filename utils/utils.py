@@ -6,6 +6,8 @@ from typing import List
 from numpy.core.multiarray import ndarray
 from skimage import io
 
+from image_grabber.grab_settings import DEBUG_MODE
+
 
 class StringUtil:
     def __init__(self):
@@ -19,6 +21,22 @@ class StringUtil:
     def is_http_url(src) -> bool:
         result = unicodedata.normalize('NFKD', src).encode('ascii', 'ignore')
         return result[:4].decode() == "http"
+
+
+class ExceptionUtil:
+
+    @staticmethod
+    def print(e):
+        if DEBUG_MODE:
+            print(e)
+
+
+class ProgressBarUtil:
+
+    @staticmethod
+    def update(progress: int, total: int):
+        workdone = progress / total
+        print("\rProgress: [{0:50s}] {1:.1f}%".format('#' * int(workdone * 50), workdone * 100), end="", flush=True)
 
 
 class FileUtil:
@@ -77,3 +95,7 @@ class FileUtil:
         FileUtil.create_folder(folder_path)
         full_destination = FileUtil.generate_next_file_path(folder_path, file_prefix)
         io.imsave(full_destination, processed_image)
+
+
+class NoImageFoundException(Exception):
+    pass

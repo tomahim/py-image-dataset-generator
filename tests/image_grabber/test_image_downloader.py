@@ -4,6 +4,7 @@ import mock
 
 from image_grabber.grab_settings import *
 from image_grabber.image_downloader import ImageDownloader
+from utils.utils import NoImageFoundException
 
 
 class TestImageDownloader(unittest.TestCase):
@@ -30,12 +31,30 @@ class TestImageDownloader(unittest.TestCase):
 
     @staticmethod
     def get_images_url(keyword):
+        return ["url1", "url2"]
+
+    @staticmethod
+    def get_images_url_with_no_results(keyword):
         return []
+
+    @staticmethod
+    def get_images_url(keyword):
+        return ["url1", "url2"]
 
     @mock.patch('image_grabber.bing_grabber.BingGrabber.get_images_url', new=get_images_url)
     def test_download_from_bing_only(self):
         self.downloader.sources = [GrabSourceType.BING.value]
         self.downloader.download_images("cats")
+
+    @mock.patch('image_grabber.bing_grabber.BingGrabber.get_images_url', new=get_images_url_with_no_results)
+    def test_download_with_no_grabbed_image_found(self):
+        self.downloader.sources = [GrabSourceType.BING.value]
+        try:
+            self.downloader.download_images('nsdmqlskdmqlskdmlqskd')
+        except NoImageFoundException:
+            pass
+        else:
+            self.fail("it should have raise an exception")
 
 
 if __name__ == '__main__':

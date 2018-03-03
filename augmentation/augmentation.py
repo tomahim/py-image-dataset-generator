@@ -1,7 +1,10 @@
 import random
 
+import time
+
 from augmentation.operations import OperationPipeline
-from utils.utils import FileUtil
+from image_grabber.grab_settings import DEBUG_MODE
+from utils.utils import FileUtil, ProgressBarUtil, NoImageFoundException, ExceptionUtil
 
 
 class DatasetGenerator(OperationPipeline):
@@ -34,21 +37,35 @@ class DatasetGenerator(OperationPipeline):
         """
             Execute the pipeline operation as configured
         """
+        start_time = time.time()
         images_in_folder = FileUtil.get_images_file_path_array(self.folder_path)
+
+        if not images_in_folder:
+            raise (NoImageFoundException("No images found in %s folder" % self.folder_path))
+
         images_to_transform = []
 
         # pick 'num_files' random files that will be use for data augmentation
         while len(images_to_transform) < self.num_files:
             images_to_transform.append(random.choice(images_in_folder))
 
+        i = 0
         for file_path in images_to_transform:
-            augmented_image = FileUtil.open(file_path)
-            for operation in self.operations:
-                random_num = random.uniform(0, 1)
-                do_operation = random_num <= operation.probability
-                if do_operation:
-                    augmented_image = operation.execute(augmented_image)
-            if self.save_to_disk:
-                FileUtil.save_file(augmented_image, self.folder_destination, "aug")
+            try:
+                augmented_image = FileUtil.open(file_path)
+                for operation in self.operations:
+                    random_num = random.uniform(0, 1)
+                    do_operation = random_num <= operation.probability
+                    if do_operation:
+                        augmented_image = operation.execute(augmented_image)
+                if self.save_to_disk:
+                    FileUtil.save_file(augmented_image, self.folder_destination, "aug")
+            except Exception as e:
+                ExceptionUtil.print(e)
+                pass
+            finally:
+                i = i + 1
+                ProgressBarUtil.update(i, self.num_files)
 
-        print('%s generated in the folder %s' % (self.num_files, self.folder_destination))
+        end_time = time.time()
+        print('\n\n %s images generated in the folder %s in %s sec' % (self.num_files, self.folder_destination, round(end_time - start_time, 2)))

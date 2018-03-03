@@ -1,15 +1,14 @@
 import base64
 import math
-import os
 import time
 import urllib.request
-from typing import NoReturn, List, Tuple
+from typing import NoReturn, Tuple
 
 from skimage import io as _io
 from skimage.transform import resize
 
 from image_grabber.grabbed_image import GrabbedImage
-from utils.utils import StringUtil
+from utils.utils import *
 from .bing_grabber import BingGrabber
 from .google_grabber import GoogleGrabber
 from .grab_settings import *
@@ -33,7 +32,8 @@ class ImageDownloader:
         self.limit = limit
 
     def download_images(self, keyword: str) -> NoReturn:
-        start = time.time()
+
+        start_time = time.time()
 
         if not keyword:
             raise Exception('No keyword to search')
@@ -56,15 +56,14 @@ class ImageDownloader:
         if ALL_SOURCE in self.sources or len(selected_sources) > 1:
             images = self.__repart_between_image_sources(selected_sources, images)
 
-        nb_urls = len(images)
-        if nb_urls == 0:
-            print("No image found on sources " + ",".join(list(self.sources)))
+        if not images:
+            raise (NoImageFoundException("No images found on sources %s" % ",".join(list(self.sources))))
         else:
             sub_folder_name = self.__create_destination_folder()
-            print("\n %s images found on %s, limit to download set to %s \n" % (nb_urls, self.sources, self.limit))
-            self.__download_files(images[:self.limit], sub_folder_name)
-            end = time.time()
-            print("\n %s images downloaded in %s sec" % (self.limit, end - start))
+            print("\n %s images found on %s, limit to download: %s \n" % (len(images), self.sources, self.limit))
+            nb_downloaded = self.__download_files(images, sub_folder_name)
+            end_time = time.time()
+            print("\n\n %s images downloaded in %s sec" % (nb_downloaded, round(end_time - start_time, 2)))
 
     def __repart_between_image_sources(self, sources: List[str], images: List[GrabbedImage]) -> List[GrabbedImage]:
         nb_by_source = int(math.ceil(self.limit / len(sources)))
@@ -91,38 +90,38 @@ class ImageDownloader:
             os.mkdir(sub_folder)
         return sub_folder
 
-    def __download_files(self, images: List[GrabbedImage], folder_name: str) -> NoReturn:
+    def __download_files(self, images: List[GrabbedImage], folder_path: str) -> int:
         """urls param is a list of GrabbedImage object with url / extension or just base64"""
+        nb_downloaded = 0
         for i, image in enumerate(images):
-            if i == self.limit:
+            if nb_downloaded == self.limit:
                 break
             try:
-
-                counter = len([i for i in os.listdir(folder_name) if self.file_prefix in i]) + 1
-                extension = ".jpg" if image.extension is None else "." + image.extension
-                file_name = self.file_prefix + "_" + str(counter) + extension
-                full_destination = os.path.join(folder_name, file_name)
+                full_destination = FileUtil.generate_next_file_path(folder_path, self.file_prefix)
                 if self.resize is not None:
                     self.__resize_and_save(image, self.resize, full_destination)
                 else:
-                    print("> grabbing %s \n >> saving file %s" % (
-                        image.url if image.url else 'from base64 content', file_name)
-                          )
+                    self.__save_image(image, full_destination)
 
-                    image_to_write = None
-                    if image.base64 is not None:
-                        image_to_write = self.__decode_base64(image.base64)
-                    elif image.url is not None:
-                        image_to_write = urllib.request.urlopen(image.url).read()
-
-                    f = open(full_destination, 'wb')
-                    f.write(image_to_write)
-                    f.close()
+                nb_downloaded = nb_downloaded + 1
+                ProgressBarUtil.update(nb_downloaded, self.limit)
 
             except Exception as e:
-                print("error while loading/writing image")
-                print(e)
-                print(image.url if image.url else image.base64[:50])
+                ExceptionUtil.print(e)
+                pass
+        return nb_downloaded
+
+    def __save_image(self, image: GrabbedImage, full_destination: str):
+        """ save base64 or file from URL on the disk """
+        image_to_write = None
+        if image.base64 is not None:
+            image_to_write = self.__decode_base64(image.base64)
+        elif image.url is not None:
+            image_to_write = urllib.request.urlopen(image.url).read()
+
+        f = open(full_destination, 'wb')
+        f.write(image_to_write)
+        f.close()
 
     def __resize_and_save(self, image: GrabbedImage, size: Tuple[int], dest: str):
         """ Resize the file with size Tuple (width, height) and save it to the destination path """
@@ -131,6 +130,7 @@ class ImageDownloader:
             image_url = image.url
         elif image.base64 is not None:
             # in case of base64 content, need to physically create the file
+            # the file is then overwrite with the resized image
             f = open(dest, 'wb')
             f.write(self.__decode_base64(image.base64))
             f.close()
