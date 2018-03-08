@@ -32,7 +32,7 @@ TADA ! In few seconds you will get 10 000 different images of funny cats to trai
 
 ### Pre-requirements
 
-This project is tested with Python 3.5.4 and more.
+This project is tested with Python 3.6.4 and more.
 
 *Linux*
 
