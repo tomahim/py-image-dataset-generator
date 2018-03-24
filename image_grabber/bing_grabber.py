@@ -19,7 +19,7 @@ class BingGrabber(AbstractGrabber):
     def __init__(self):
         pass
 
-    def get_images_url(self, keyword: str) -> List[GrabbedImage]:
+    def get_images_url(self, keyword: str, nb_images: int) -> List[GrabbedImage]:
         query = keyword.split()
         query = '+'.join(query)
         url = self.BING_URL % query
@@ -37,7 +37,7 @@ class BingGrabber(AbstractGrabber):
         elem = browser.find_element_by_tag_name("body")
 
         # scroll to fire the infinite scroll event and load more images
-        no_of_pages_down = 20
+        no_of_pages_down = 20 if nb_images < 300 else 100
         while no_of_pages_down:
             elem.send_keys(Keys.PAGE_DOWN)
             time.sleep(0.2)

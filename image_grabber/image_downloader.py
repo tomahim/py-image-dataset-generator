@@ -46,12 +46,12 @@ class ImageDownloader:
         if GrabSourceType.GOOGLE.value in selected_sources:
             google_grabber = GoogleGrabber()
             google_grabber.full_image = self.full_image
-            images.extend(google_grabber.get_images_url(self.keyword))
+            images.extend(google_grabber.get_images_url(self.keyword, self.limit))
 
         if GrabSourceType.BING.value in selected_sources:
             bing_grabber = BingGrabber()
             bing_grabber.full_image = self.full_image
-            images.extend(bing_grabber.get_images_url(self.keyword))
+            images.extend(bing_grabber.get_images_url(self.keyword, self.limit))
 
         if ALL_SOURCE in self.sources or len(selected_sources) > 1:
             images = self.__repart_between_image_sources(selected_sources, images)

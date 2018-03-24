@@ -12,6 +12,6 @@ class AbstractGrabber:
         raise NotImplementedError
 
     @abstractmethod
-    def get_images_url(self, keyword: str) -> List[GrabbedImage]:
+    def get_images_url(self, keyword: str, nb_images: int) -> List[GrabbedImage]:
         """ it should return extracted data with at least base64 or url defined """
         pass

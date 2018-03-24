@@ -19,7 +19,7 @@ class GoogleGrabber(AbstractGrabber):
     def __init__(self):
         pass
 
-    def get_images_url(self, keyword: str) -> List[GrabbedImage]:
+    def get_images_url(self, keyword: str, nb_images: int) -> List[GrabbedImage]:
         query = keyword.split()
         query = '+'.join(query)
         url = self.GOOGLE_URL % query
@@ -36,11 +36,18 @@ class GoogleGrabber(AbstractGrabber):
         elem = browser.find_element_by_tag_name("body")
 
         # scroll to fire the infinite scroll event and load more images
-        no_of_pages_down = 20
+        no_of_pages_down = 20 if nb_images < 300 else 100
         while no_of_pages_down:
             elem.send_keys(Keys.PAGE_DOWN)
             time.sleep(0.2)
             no_of_pages_down -= 1
+            try:
+                show_more_btn = browser.find_element_by_id("smb")
+                if show_more_btn.is_displayed():
+                    show_more_btn.click()
+            except Exception as e:
+                pass
+
 
         images_objects = []
         if self.full_image:
