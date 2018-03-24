@@ -75,10 +75,12 @@ Parameters  | Description
 ---    | --- 
 Keyword *(required)* | The first parameter should be a keyword describing the images to search for. <br><br> `python download.py "red car"`
 Destination folder <br>*-dest or -d* | Specify the destination folder to save files (default: images/) <br><br> `python download.py "red car" -dest=your_folder`
-Limit number <br>*-limit or -l* | Specify the number of files to download (default: 50) <br><br> `python download.py "red car" -limit=200`
+Limit number <br>*-limit or -l* | Specify the number of files to download (default: 50). See the note below for the maximum limit. <br><br> `python download.py "red car" -limit=200`
 Thumbnail only <br>*-thumbnail or -thumb* | Download the thumbnail instead of the full original image <br><br>   `python download.py "red car" -thumbnail`
 Resize image <br>*-resize* | Resize downloaded images on the fly, to get a dataset formatted with the same size (default: no resizing). The parameter should be a couple of number representing the width and height (32x32 will ouput 32px x 32px image files) <br><br>  `python download.py "red car" -resize=32x32"`
 Grab source <br>*-source, -src or -allsources* |  Choose the website to grab images : Google and/or Bing (default: Google). *-allsources* parameter can be use to. It will equally mix image files from all available sources <br><br> `python download.py "red car" -source=Google` (single source) <br> `python download.py "red car" -source=Google -source=Bing` (multi source)<br> `python download.py "red car" -allsources` (all sources)
+
+Note : There are known limitations for the total number of images you can download in one use of the `download.py` script. Bing and Google won't let you download more than 800 images each, so the maximum for one download is around 1600 images if you use the `-allsources` parameter.
 
 #### Image augmentation
 
