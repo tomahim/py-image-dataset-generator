@@ -116,7 +116,7 @@ from augmentation.augmentation import DatasetGenerator
 
 pipeline = DatasetGenerator(
     folder_path="images/red_car/",
-    max_files=5000,
+    num_files=5000,
     save_to_disk=True,
     folder_destination="images/red_car/results"
 )
